@@ -21,6 +21,4 @@ class state_class():
         self.light_power = False
         self.new_message_event = Event()
         self.state_processed_event = Event()
-        self.mqtt_configuration = {
-            "hostname": "",
-        }
+        self.mqtt_configuration = dict()

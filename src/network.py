@@ -4,6 +4,8 @@ from random import randrange
 from asyncio_mqtt import Client, MqttError
 from classes.state import state_class
 
+# TODO inital discovery message
+
 
 async def mqtt(state: state_class):
     async with AsyncExitStack as stack:
@@ -12,13 +14,17 @@ async def mqtt(state: state_class):
 
         stack.push_async_callback(cancel_tasks, tasks)
 
-        client = Client(state.mqtt_configuration["hostname"])
+        # Connect to the MQTT server configured by the user
+        client = Client(state.mqtt_configuration["hostname"],
+                        state.mqtt_configuration["port"])
         await stack.enter_async_context(client)
 
 
 async def process_message(messages, template, state: state_class):
     async for message in messages:
-        print(message)
+        print(message) 
+        # TODO Actually implement the processing of Home assistant messages
+
         # signal to the light loop that there is a new state for it
         # to act on
         state.new_message_event.set()
@@ -28,6 +34,7 @@ async def process_message(messages, template, state: state_class):
 
 
 async def cancel_tasks(tasks):
+    # * This is borrowed from the example code of the mqtt libary
     for task in tasks:
         task.cancel()
         try:
