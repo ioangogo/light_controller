@@ -6,6 +6,9 @@ class light_provider():
         self.brightness = 0
         self.power = False
     
+    def config(configuration: dict):
+        raise NotImplementedError
+
     def set_colour(self, colour):
         raise NotImplementedError
     
