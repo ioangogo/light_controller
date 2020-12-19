@@ -4,6 +4,7 @@ from network import mqtt
 from classes.state import state_class
 from light_loop import light_loop
 from asyncio_mqtt import MqttError
+import src.light_ctrl.loader
 
 
 async def cancel_tasks(tasks):
@@ -16,7 +17,7 @@ async def cancel_tasks(tasks):
             pass
 
 
-async def main(state: state_class):
+async def async_main(state: state_class):
     numAttempts = 3
     while numAttempts > 0:
         try:
@@ -32,3 +33,6 @@ async def main(state: state_class):
             print(f'Error "{error}". Reconnecting. Attempts Remaining {numAttempts}')
         finally:
             await asyncio.sleep(3)
+
+def main():
+    state = state_class()

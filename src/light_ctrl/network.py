@@ -2,7 +2,7 @@ import asyncio
 from contextlib import AsyncExitStack, asynccontextmanager
 from random import randrange
 from asyncio_mqtt import Client, MqttError
-from classes.state import state_class
+from .classes.state import state_class
 
 # TODO inital discovery message
 
@@ -15,8 +15,12 @@ async def mqtt(state: state_class):
         stack.push_async_callback(cancel_tasks, tasks)
 
         # Connect to the MQTT server configured by the user
-        client = Client(state.mqtt_configuration["hostname"],
+        client = Client(state.mqtt_configuration["host"],
                         state.mqtt_configuration["port"])
+
+        # Subcribe to get settings
+        client.subcribe(state.mqtt_configuration["topics"]["command"])
+
         await stack.enter_async_context(client)
 
 

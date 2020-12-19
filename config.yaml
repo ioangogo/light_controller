@@ -1,0 +1,7 @@
+mqtt:
+  port: 1883
+  host: "localhost"
+  topics:
+    command: ""
+    state: ""
+      
